@@ -22,10 +22,10 @@ Table of Contents
 		2. Work for it (mining)
 	4. Analyzing the solution
 4. Things we missed
-1. Mining
-2. Wallets
-3. Transactions / UTXOs
-4. Merkle Trees
+	1. Nodes
+	2. Wallets
+	3. Transactions / UTXOs
+	4. Merkle Trees
 10. References and Relevant Links
 
 ## Foreword - Things to know
@@ -362,13 +362,49 @@ big picture of how "The Blockchain" works in the context of Bitcoin. We've creat
 
 While that was most of the big picture stuff, I glossed over a lot of details.
 
-* Mining
 * Nodes
 * Wallets
 * Transactions / UTXOs
 * Confirmations
 * Merkle Trees
 
+---
+
+
+## Nodes
+
+Originally, all parts of Bitcoin were done by the same software, running on CPUs, and these computers were called Nodes.
+
+* Wallet application
+* Consensus Rules - verifying block validity, create (not solve) new blocks
+* P2P Network - connect to other bitcoin nodes, listen/send transactions
+* Mining - solve new blocks
+
+
+Over time, people realized that Graphics Processing Units (GPUs, or Graphics Cards) were significantly more 
+effective at mining than CPUs, so miners began to write software meant only mine, and to utilize the maximum 
+capabilities of GPU processing for hashing. So mining was split off as a separate task from the rest of the node.
+
+Nodes (CPU):
+* Wallet
+* Consensus
+* P2P
+
+Miners (GPU)
+* Mining
+
+Eventually, even GPUs were not good enough for the miners. Now, they use something called an ASIC - Application 
+Specific Integrated Circuit. Basically, took all the benefits of a GPU (tons of tiny processors), stripped out the 
+general-purpose compute power, and maximized efficiency towards hashing. This hardware is better than GPUs by about 
+a millionfold. They are also more energy-efficient for hashing than GPUs.
+
+
+While this is generally still the model, there also now exist Light Nodes, which are the same thing as Full Nodes,
+but they only perform partial-consensus (verify _your_ transactions, rather than _all_ transactions). These are more 
+performant, but also since they do not verify the entire blockchain, still require some level of trust. They are 
+typically used for mobile wallet applications.
+
+---
 ---
 
 ## Wallets
@@ -485,7 +521,7 @@ Trade-offs of hardware wallets
 ---
 ---
 
-### Transactions, and UTXOs
+## Transactions, and UTXOs
 
 So how is a person's bitcoin "balance" calculated? We can determine this by calculating the value of any Unspent
 Transaction Outputs (UTXOs) that point to them. This works in essentially the same way as your bank will determine what
@@ -516,10 +552,7 @@ After Alice hands him some cash, Bob sends 10 BTC to Alice
 |---|---|---|
 |0xb0345 (Bob)|0xa1234 (Alice)|10|
 
-Again, Alice now has one UTXO in the amount of 10 BTC at her disposal. On a technical level, the "ID" would actually be
-a single-use wallet address, but I've abstracted the technicals of how wallets work for the purposes of this lesson. The
-purpose is to identify which coins are being spent in which transactions.
-
+Again, Alice now has one UTXO in the amount of 10 BTC at her disposal.
 
 ---
 
@@ -614,7 +647,7 @@ Finally, the new TV that Alice wanted is on sale for $1000, so she goes and buys
 |Alice|1000|Initial Deposit| 1000 |
 |Alice|-50|Purchase at Target| 950 |
 |Alice|100|Deposit from Bob| 1050 |
-|Alice|1000|Purchase at Best Buy| 50 |
+|Alice|-1000|Purchase at Best Buy| 50 |
 
 A single new entry has been added representing a $1000 decrease, and Alice's new balance is calculated.
 
@@ -639,7 +672,7 @@ always know what someone's balance is before they purchase something from you, a
 ---
 ---
 
-### Confirmations
+## Confirmations
 
 After a user broadcasts their transaction to the bitcoin network, it still hasn't been "confirmed" yet - that is to 
 say, it doesn't appear on the ledger (the blockchain), so in some sense, it hasn't really "happened" yet. The way 
@@ -650,7 +683,8 @@ be competing forks of the blockchain - two different miners solving blocks at ab
 different transactions. If you don't wait for additional confirmations, then its possible you may lose your 
 transaction if another miner solves multiple blocks very quickly, and those blocks contain different transactions.
 
-
+---
+---
 
 ## References and Relevant Links
 
